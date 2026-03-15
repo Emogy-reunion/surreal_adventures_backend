@@ -7,6 +7,6 @@ def create_app():
     return: the application instance
     '''
 
-    app = Flask()
+    app = Flask(__name__)
 
     return app
