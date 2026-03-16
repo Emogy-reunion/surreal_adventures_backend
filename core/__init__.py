@@ -1,4 +1,5 @@
 from flask import Flask
+from core.config import Config
 
 
 def create_app():
@@ -8,5 +9,7 @@ def create_app():
     '''
 
     app = Flask(__name__)
+
+    app.from_object(Config)
 
     return app
