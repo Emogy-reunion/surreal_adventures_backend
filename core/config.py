@@ -2,7 +2,7 @@
 stores the application's configuration settings
 '''
 import os
-import load_dotenv from dotenv
+from dotenv import load_dotenv
 
 load_dotenv()
 
