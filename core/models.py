@@ -5,7 +5,7 @@ import uuid
 
 
 
-class Users(db.model):
+class Users(db.Model):
     '''
     stores the user data
     '''
