@@ -13,7 +13,7 @@ class Users(db.model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password_hash = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime,
-                           default: lambda: datetime.now(timezone.utc)
+                           default=lambda: datetime.now(timezone.utc)
                            )
     modified_at = db.Column(db.DateTime,
                             default=lambda: datetime.now(timezone.utc),
