@@ -21,4 +21,6 @@ def create_app():
     bcrypt.init_app(app)
     migrate.init_app(app, db)
 
+    from core.models import Users
+
     return app
