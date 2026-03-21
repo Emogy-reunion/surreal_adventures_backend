@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
 from core.models import Users
+from core.forms import RegistrationForm, LoginForm
 from core import db
 from werkzeug.datastructures import MultiDict
+from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies
 
 
 auth = Blueprint('auth', __name__)
@@ -42,3 +44,42 @@ def register():
         return jsonify({'error': 'An unexpected error occurred. Please try again!'}), 500
 
 
+
+@auth.route('/login', methods=['POST'])
+def login():
+    '''
+    authenticates the users
+    checks if the user has a registered account
+    Ensures the user's password matches the stored password
+    return:
+        errors: form errors (invalid email format)
+        error: if an error occurs
+        success: successful login
+    '''
+
+    try:
+        json_data = request.get_json() or {}
+        form = LoginForm(formData=MultiDict(json_data))
+
+        if not form.validate():
+            return ({'errors': form.errors}), 400
+
+        email = form.email.data.strip().lower()
+        password = form.password.data
+
+        user = Users.query.filter_by(email=email).first()
+
+        if not user or not user.check_password(password):
+                return jsonify({"error": 'Invalid login credentials!'}), 400
+            else:
+
+                access_token = create_access_token(identity=user.id)
+                refresh_token = create_refresh_token(identity=user.id)
+
+                response = jsonify({'success': 'Logged in successfully. Enjoy the experience!'})
+                response.status_code = 200
+                set_access_cookies(response, access_token)
+                set_refresh_cookies(response, refresh_token)
+                return response
+    except Exception as e:
+        return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
