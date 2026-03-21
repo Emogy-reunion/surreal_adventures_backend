@@ -3,7 +3,8 @@ from core.models import Users
 from core.forms import RegistrationForm, LoginForm
 from core import db
 from werkzeug.datastructures import MultiDict
-from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies
+from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, get_jwt_identity, jwt_required
+import uuid
 
 
 auth = Blueprint('auth', __name__)
@@ -73,13 +74,44 @@ def login():
                 return jsonify({"error": 'Invalid login credentials!'}), 400
             else:
 
-                access_token = create_access_token(identity=user.id)
-                refresh_token = create_refresh_token(identity=user.id)
+                access_token = create_access_token(identity=str(user.id))
+                refresh_token = create_refresh_token(identity=str(user.id))
 
                 response = jsonify({'success': 'Logged in successfully. Enjoy the experience!'})
                 response.status_code = 200
                 set_access_cookies(response, access_token)
                 set_refresh_cookies(response, refresh_token)
                 return response
+    except Exception as e:
+        return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
+
+
+@auth.route('/refresh_token', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh_token():
+    '''
+    Create a new access token
+    return:
+        new access token
+    '''
+
+    try:
+        user_id = uuid.UUID((get_jwt_identity()))
+    except ValueError:
+        return jsonify({"error": "Invalid token"}), 401
+
+    try:
+        # check if user still exists
+        user = Users.query.get(user_id)
+        if not user:
+            return jsonify({"error": "Invalid token"}), 401
+
+        access_token = create_access_token(identity=str(user_id))
+        response = jsonify({"success": 'Token refreshed successfully!'})
+        response.status_code = 200
+        set_access_cookies(response, access_token)
+
+        return response
+
     except Exception as e:
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
