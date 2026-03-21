@@ -97,10 +97,7 @@ def refresh_token():
 
     try:
         user_id = uuid.UUID((get_jwt_identity()))
-    except ValueError:
-        return jsonify({"error": "Invalid token"}), 401
 
-    try:
         # check if user still exists
         user = Users.query.get(user_id)
         if not user:
@@ -112,6 +109,9 @@ def refresh_token():
         set_access_cookies(response, access_token)
 
         return response
+
+    except ValueError:
+        return jsonify({"error": "Invalid token"}), 40
 
     except Exception as e:
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
