@@ -3,7 +3,7 @@ from core.models import Users
 from core.forms import RegistrationForm, LoginForm
 from core import db
 from werkzeug.datastructures import MultiDict
-from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, get_jwt_identity, jwt_required
+from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, get_jwt_identity, jwt_required, unset_jwt_cookies
 import uuid
 
 
@@ -111,6 +111,22 @@ def refresh_token():
         response.status_code = 200
         set_access_cookies(response, access_token)
 
+        return response
+
+    except Exception as e:
+        return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
+
+
+@app.route('/logout', method['POST'])
+@jwt_required(verify_type=False)
+def logout():
+    '''
+    destroys the access tokens by removing the tokens from the cookies
+    '''
+    try:
+        response = jsonify({"success": 'Logged out successfully!'})
+        response.status_code = 200
+        unset_jwt_cookies(response)
         return response
 
     except Exception as e:
