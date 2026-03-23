@@ -18,6 +18,6 @@ def create_app():
     jwt.init_app(app)
     migrate.init_app(app, db)
 
-    from core.models import Users
+    import core.models
 
     return app
