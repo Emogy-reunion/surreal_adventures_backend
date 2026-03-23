@@ -117,7 +117,7 @@ def refresh_token():
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
 
 
-@app.route('/logout', method['POST'])
+@auth.route('/logout', method['POST'])
 @jwt_required(verify_type=False)
 def logout():
     '''
