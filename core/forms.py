@@ -25,3 +25,12 @@ class RegistrationForm(FlaskForm):
         DataRequired(),
         EqualTo('password', message='Passwords do no match!')
         ])
+
+class LoginForm(FlaskForm):
+    email = StringField('Email:', validators=[
+        Email(),
+        DataRequired()
+        ])
+    password = PasswordField('Password:', validators=[
+        DataRequired(),
+        ])
