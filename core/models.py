@@ -1,4 +1,4 @@
-from core import db, bcrypt
+from core.extensions import db, bcrypt
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime, timezone
 import uuid
