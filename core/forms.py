@@ -13,7 +13,7 @@ class RegistrationForm(FlaskForm):
         Email(),
         DataRequired()
         ])
-     password = PasswordField('Password: ', validators=[
+    password = PasswordField('Password: ', validators=[
         DataRequired(),
         Length(min=8, message="Password must be at least 8 characters long!"),
         Regexp(r'(?=.*[A-Z])', message="Password must contain at least one uppercase letter!"),
@@ -32,5 +32,5 @@ class LoginForm(FlaskForm):
         DataRequired()
         ])
     password = PasswordField('Password:', validators=[
-        DataRequired(),
+        DataRequired()
         ])
