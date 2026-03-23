@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from core.models import Users
 from core.forms import RegistrationForm, LoginForm
-from core import db
+from core.extensions import db
 from werkzeug.datastructures import MultiDict
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, get_jwt_identity, jwt_required, unset_jwt_cookies
 import uuid
