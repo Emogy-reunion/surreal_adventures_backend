@@ -1,12 +1,6 @@
 from flask import Flask
 from core.config import Config
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
-from flask_migrate import Migrate
-
-db = SQLAlchemy()
-bcrypt = Bcrypt()
-migrate = Migrate()
+from core.extensions import jwt, bcrypt, migrate, db
 
 def create_app():
     '''
@@ -17,10 +11,13 @@ def create_app():
     app = Flask(__name__)
 
     app.config.from_object(Config)
+
+    # initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)
+    jwt.init_app(app)
     migrate.init_app(app, db)
 
-    from core.models import Users
+    import core.models
 
     return app
