@@ -1,5 +1,6 @@
 from flask import Flask
 from core.config import Config
+from core.routes import register_blueprints
 from core.extensions import jwt, bcrypt, migrate, db
 
 def create_app():
@@ -19,5 +20,7 @@ def create_app():
     migrate.init_app(app, db)
 
     import core.models
+
+    register_blueprints(app)
 
     return app
