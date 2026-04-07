@@ -43,8 +43,6 @@ class User(db.Model):
             return check_password_hash(self.password_hash, password)
 
 
-
-
 class Country(db.Model):
     '''
     stores the country names
@@ -55,17 +53,6 @@ class Country(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
     slug = db.Column(db.String(255), unique=True, nullable=False)
     destinations = db.relationship('Destination', back_populates='country', lazy='selectin')
-
-    def __init__(self, name):
-        '''
-        initializes table with data
-        '''
-        self.name = name
-        self.slug = self.generate_slug(name)
-
-    @staticmethod
-    def generate_slug(name):
-        return slugify(name)
 
 class Destination(db.Model):
     __tablename__ = 'destinations'
