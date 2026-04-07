@@ -53,6 +53,7 @@ class Country(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
     slug = db.Column(db.String(255), unique=True, nullable=False)
     destinations = db.relationship('Destination', back_populates='country', lazy='selectin')
+    tours = db.relationship('Tour', back_populates='country', lazy='selectin')
 
 class Destination(db.Model):
     __tablename__ = 'destinations'
@@ -103,7 +104,7 @@ class Tour(db.Model):
     user = db.relationship('User', back_populates='tours')
 
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
-    country = db.relationship('Country', back_populates='destinations', lazy='selectin')
+    country = db.relationship('Country', back_populates='tours', lazy='selectin')
 
     name = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
