@@ -33,10 +33,10 @@ class User(db.Model):
         initializes the table with data
         '''
         self.email = email
-        self.password_hash = hash_password(password)
+        self.password_hash = User.hash_password(password)
 
-
-        def hash_password(self, password):
+        @staticmethod
+        def hash_password(password):
             return bcrypt.generate_password_hash(password).decode('utf-8')
 
 
