@@ -26,7 +26,7 @@ class User(db.Model):
                             onupdate=lambda: datetime.now(timezone.utc)
                             )
     destinations = db.relationship('Destination', back_populates='user', lazy='selectin')
-    tours = db.relationship('Tours', back_populates='user', lazy='selectin'
+    tours = db.relationship('Tours', back_populates='user', lazy='selectin')
 
     def __init__(self, email, password):
         '''
@@ -38,6 +38,10 @@ class User(db.Model):
         @staticmethod
         def hash_password(password):
             return bcrypt.generate_password_hash(password).decode('utf-8')
+
+        def check_password(self, password):
+            return check_password_hash(self.password_hash, password)
+
 
 
 
