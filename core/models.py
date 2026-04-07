@@ -92,6 +92,21 @@ class Destination(db.Model):
                             onupdate=lambda: datetime.now(timezone.utc)
                             )
 
+    def __init__(self, country_id, user_id, name, start_price, description, highlights, is_featured, category):
+        self.country_id = country_id
+        self.user_id = user_id
+        self.name = name
+        self.start_price = start_price
+        self.description = description
+        self.highlights = highlights
+        self.is_featured = is_featured
+        self.category = category
+        self.slug = slug
+
+    @staticmethod
+    def generate_slug(name):
+        return slugify(name)
+
 class DestinationImages(db.Model):
     '''
     stores images specific to a destination
