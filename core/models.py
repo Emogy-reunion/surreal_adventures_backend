@@ -30,3 +30,13 @@ class Users(db.Model):
 
         def hash_password(self, password):
             return bcrypt.generate_password_hash(password).decode('utf-8')
+
+
+
+class Country(db.Model):
+    '''
+    stores the country names
+    '''
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False, unique=True)
+    slug = db.Column(db.String(255), unique=True, nullable=False)
