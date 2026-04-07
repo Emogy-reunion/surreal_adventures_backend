@@ -65,13 +65,14 @@ class Destination(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
     user = db.relationship('User', back_populates='destinations', lazy='selectin')
 
-    name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    location = db.Column(db.String(255), nullable=False)
     start_price = db.Column(db.Numeric(10,2), nullable=False)
     description = db.Column(db.Text, nullable=False)
     highlights = db.Column(JSONB, nullable=False)
     is_featured = db.Column(db.Boolean, default=False)
     category = db.Column(db.String(50))
-    slug = db.Column(db.String(255), unique=True, nullable=False)
+    slug = db.Column(db.String(255), nullable=False)
 
     images = db.relationship('DestinationImages', back_populates='destination', lazy='selectin', cascade='all, delete-orphan')
 
