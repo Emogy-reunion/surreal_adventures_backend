@@ -26,6 +26,7 @@ class User(db.Model):
                             onupdate=lambda: datetime.now(timezone.utc)
                             )
     destinations = db.relationship('Destination', back_populates='user', lazy='selectin')
+    tours = db.relationship('Tours', back_populates='user', lazy='selectin'
 
     def __init__(self, email, password):
         '''
