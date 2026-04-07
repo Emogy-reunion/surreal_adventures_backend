@@ -96,6 +96,49 @@ class DestinationImages(db.Model):
     stores images specific to a destination
     '''
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    destination_id = db.Column(db.Integer, db.ForeignKey('destinations.id'), nullable=False)
+    destination_id = db.Column(db.Integer, db.ForeignKey('destinations.id', ondelete='CASCADE'), nullable=False)
     destination = db.relationship('Destination', back_populates='images')
     filename = db.Column(db.String(255), nullable=False, unique=True)
+
+class Tour(db.Model):
+    '''
+    store planned tours data
+    '''
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+
+    user_id = db.Column(d.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
+    user = db.relationship('User', back_populates='tours')
+
+    name = db.Column(db.String(255), nullable=False)
+    location = db.Column(db.String(255), nullable=False)
+    duration = db.Column(db.String(255), nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
+    discount_start = db.Column(db.Date, nullable=True)
+    discount_end = db.Column(db.Date, nullable=True)
+    discount_price = db.Column(db.Numeric(10,2), nullable=True)
+    is_featured = db.Column(db.Boolean, default=False)
+    is_active = db.Column(db.Boolean, default=True)
+    description = db.Column(db.Text, nullable=False)
+    includes = db.Column(JSONB, nullable=False)
+    excludes = db.Column(JSONB, nullable=False)
+    highlights = db.Column(JSONB, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=True)
+    is_day_trip = db.Column(db.Boolean, default=False)
+    images = db.relationship('TourImages', back_populates='tour', cascade='all, delete-orphan', lazy='selectin')
+
+    created_at = db.Column(db.DateTime,
+                           default=lambda: datetime.now(timezone.utc)
+                           )
+    modified_at = db.Column(db.DateTime,
+                            default=lambda: datetime.now(timezone.utc),
+                            onupdate=lambda: datetime.now(timezone.utc)
+                            )
+
+class TourImages(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    tour_id = db.Column(db.Integer, db.ForeignKey('tours.id', ondelete='CASCADE'), nullable=False)
+    tour = db.relationship('Tour', back_populates='images')
+    filename = db.Column(db.String(255), nullable=False)
+
+
