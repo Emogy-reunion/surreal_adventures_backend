@@ -102,6 +102,9 @@ class Tour(db.Model):
     user_id = db.Column(d.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
     user = db.relationship('User', back_populates='tours')
 
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
+    country = db.relationship('Country', back_populates='destinations', lazy='selectin')
+
     name = db.Column(db.String(255), nullable=False)
     location = db.Column(db.String(255), nullable=False)
     duration = db.Column(db.String(255), nullable=False)
