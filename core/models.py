@@ -51,7 +51,7 @@ class Country(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(100), nullable=False, unique=True)
-    slug = db.Column(db.String(255), unique=True, nullable=False)
+    slug = db.Column(db.String(255), unique=True, nullable=False, index=True)
     destinations = db.relationship('Destination', back_populates='country', lazy='selectin')
     tours = db.relationship('Tour', back_populates='country', lazy='selectin')
 
