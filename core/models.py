@@ -18,6 +18,12 @@ class User(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     email = db.Column(db.String(50), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(100), nullable=False)
+    role = db.Column(db.String(255),
+                     db.CheckConstraint("role IN ('member', 'admin', 'superadmin')",
+                     name='user_role_check'),
+                     server_default='member',
+                     nullable=False
+                     )
     created_at = db.Column(db.DateTime,
                            default=lambda: datetime.now(timezone.utc)
                            )
