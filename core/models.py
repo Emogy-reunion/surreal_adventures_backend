@@ -60,14 +60,14 @@ class Destination(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
 
-    country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False, index=True)
     country = db.relationship('Country', back_populates='destinations', lazy='selectin')
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True, index=True)
     user = db.relationship('User', back_populates='destinations', lazy='selectin')
 
     name = db.Column(db.String(255), nullable=False)
-    location = db.Column(db.String(255), nullable=False)
+    location = db.Column(db.String(255), nullable=False, index=True)
     start_price = db.Column(db.Numeric(10,2), nullable=False)
     description = db.Column(db.Text, nullable=False)
     highlights = db.Column(JSONB, nullable=False)
@@ -107,9 +107,9 @@ class Tour(db.Model):
     country = db.relationship('Country', back_populates='tours', lazy='selectin')
 
     name = db.Column(db.String(255), nullable=False)
-    location = db.Column(db.String(255), nullable=False)
+    location = db.Column(db.String(255), nullable=False, index=True)
     duration = db.Column(db.String(255), nullable=False)
-    price = db.Column(db.Numeric(10, 2), nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False, index=True)
     discount_start = db.Column(db.Date, nullable=True)
     discount_end = db.Column(db.Date, nullable=True)
     discount_price = db.Column(db.Numeric(10,2), nullable=True)
@@ -119,8 +119,8 @@ class Tour(db.Model):
     includes = db.Column(JSONB, nullable=False)
     excludes = db.Column(JSONB, nullable=False)
     highlights = db.Column(JSONB, nullable=False)
-    start_date = db.Column(db.Date, nullable=False)
-    end_date = db.Column(db.Date, nullable=True)
+    start_date = db.Column(db.Date, nullable=False, index=True)
+    end_date = db.Column(db.Date, nullable=True, index=True)
     is_day_trip = db.Column(db.Boolean, default=False)
     images = db.relationship('TourImages', back_populates='tour', cascade='all, delete-orphan', lazy='selectin')
 
