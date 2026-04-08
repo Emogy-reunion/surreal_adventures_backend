@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from core.models import Users
+from core.models import User
 from core.forms import RegistrationForm, LoginForm
-from core import db
+from core.extensions import db
 from werkzeug.datastructures import MultiDict
 from flask_jwt_extended import create_access_token, create_refresh_token, set_access_cookies, set_refresh_cookies, get_jwt_identity, jwt_required, unset_jwt_cookies
 import uuid
@@ -71,17 +71,17 @@ def login():
         user = Users.query.filter_by(email=email).first()
 
         if not user or not user.check_password(password):
-                return jsonify({"error": 'Invalid login credentials!'}), 400
-            else:
+            return jsonify({"error": 'Invalid login credentials!'}), 400
 
-                access_token = create_access_token(identity=str(user.id))
-                refresh_token = create_refresh_token(identity=str(user.id))
+        else:
+            access_token = create_access_token(identity=str(user.id))
+            refresh_token = create_refresh_token(identity=str(user.id))
 
-                response = jsonify({'success': 'Logged in successfully. Enjoy the experience!'})
-                response.status_code = 200
-                set_access_cookies(response, access_token)
-                set_refresh_cookies(response, refresh_token)
-                return response
+            response = jsonify({'success': 'Logged in successfully. Enjoy the experience!'})
+            response.status_code = 200
+            set_access_cookies(response, access_token)
+            set_refresh_cookies(response, refresh_token)
+            return response
     except Exception as e:
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
 
@@ -117,7 +117,7 @@ def refresh_token():
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
 
 
-@app.route('/logout', method['POST'])
+@auth.route('/logout', methods=['POST'])
 @jwt_required(verify_type=False)
 def logout():
     '''
