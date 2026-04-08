@@ -16,7 +16,7 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    email = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime,
                            default=lambda: datetime.now(timezone.utc)
@@ -51,7 +51,7 @@ class Country(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(100), nullable=False, unique=True)
-    slug = db.Column(db.String(255), unique=True, nullable=False)
+    slug = db.Column(db.String(255), unique=True, nullable=False, index=True)
     destinations = db.relationship('Destination', back_populates='country', lazy='selectin')
     tours = db.relationship('Tour', back_populates='country', lazy='selectin')
 
@@ -71,9 +71,9 @@ class Destination(db.Model):
     start_price = db.Column(db.Numeric(10,2), nullable=False)
     description = db.Column(db.Text, nullable=False)
     highlights = db.Column(JSONB, nullable=False)
-    is_featured = db.Column(db.Boolean, default=False)
-    category = db.Column(db.String(50))
-    slug = db.Column(db.String(255), nullable=False)
+    is_featured = db.Column(db.Boolean, default=False, index=True)
+    category = db.Column(db.String(50), index=True)
+    slug = db.Column(db.String(255), nullable=False, index=True)
 
     images = db.relationship('DestinationImages', back_populates='destination', lazy='selectin', cascade='all, delete-orphan')
 
@@ -113,8 +113,8 @@ class Tour(db.Model):
     discount_start = db.Column(db.Date, nullable=True)
     discount_end = db.Column(db.Date, nullable=True)
     discount_price = db.Column(db.Numeric(10,2), nullable=True)
-    is_featured = db.Column(db.Boolean, default=False)
-    is_active = db.Column(db.Boolean, default=True)
+    is_featured = db.Column(db.Boolean, default=False, index=True)
+    is_active = db.Column(db.Boolean, default=True, index=True)
     description = db.Column(db.Text, nullable=False)
     includes = db.Column(JSONB, nullable=False)
     excludes = db.Column(JSONB, nullable=False)
