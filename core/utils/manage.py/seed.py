@@ -24,10 +24,20 @@ def create_initial_admin():
         db.session.rollback()
         raise e
 
+def ensure_upload_folder():
+    """Creates the upload folder if it does not exist."""
+    upload_path = current_app.config.get('UPLOAD_FOLDER')
+
+    if not upload_path:
+        raise ValueError("UPLOAD_FOLDER not set in config.")
+
+    os.makedirs(upload_path, exist_ok=True)
+
 
 @app.cli.command("setup")
 def setup():
     """Set up initial admin and upload folder."""
     with app.app_context():
         create_initial_admin()
+        ensure_upload_folder()
         click.echo("Super admin created (if not exists) and upload folder ensured.")
