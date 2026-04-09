@@ -5,6 +5,25 @@ import uuid
 from slugify import slugify
 
 
+class BaseModel(db.Model):
+    '''
+    Base model that provides common timestamp fields for all models.
+    This class is marked as abstract, meaning SQLAlchemy will not create a table
+        for it directly. Instead, other models will inherit from it.
+    '''
+     # Mark this model as abstract so it is not created as a database table
+    __abstract__  = True
+
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now(),
+                           nullable=False
+                           )
+    modified_at = db.Column(db.DateTime(timezone=True),
+                            server_default=func.now(),
+                            onupdate=func.now(),
+                            nullable=False
+                            )
+
 
 class User(db.Model):
     '''
@@ -24,12 +43,14 @@ class User(db.Model):
                      server_default='member',
                      nullable=False
                      )
-    created_at = db.Column(db.DateTime,
-                           default=lambda: datetime.now(timezone.utc)
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now(),
+                           nullable=False
                            )
-    modified_at = db.Column(db.DateTime,
-                            default=lambda: datetime.now(timezone.utc),
-                            onupdate=lambda: datetime.now(timezone.utc)
+    modified_at = db.Column(db.DateTime(timezone=True),
+                            server_default=func.now(),
+                            onupdate=func.now(),
+                            nullable=False
                             )
     destinations = db.relationship('Destination', back_populates='user', lazy='selectin')
     tours = db.relationship('Tours', back_populates='user', lazy='selectin')
