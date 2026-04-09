@@ -25,7 +25,7 @@ class BaseModel(db.Model):
                             )
 
 
-class User(db.Model):
+class User(BaseModel):
     '''
     stores the user data
     has one to many relationship with destinations page
@@ -43,15 +43,6 @@ class User(db.Model):
                      server_default='member',
                      nullable=False
                      )
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now(),
-                           nullable=False
-                           )
-    modified_at = db.Column(db.DateTime(timezone=True),
-                            server_default=func.now(),
-                            onupdate=func.now(),
-                            nullable=False
-                            )
     destinations = db.relationship('Destination', back_populates='user', lazy='selectin')
     tours = db.relationship('Tours', back_populates='user', lazy='selectin')
 
@@ -70,7 +61,7 @@ class User(db.Model):
             return check_password_hash(self.password_hash, password)
 
 
-class Country(db.Model):
+class Country(BaseModel):
     '''
     stores the country names
     '''
@@ -82,7 +73,7 @@ class Country(db.Model):
     destinations = db.relationship('Destination', back_populates='country', lazy='selectin')
     tours = db.relationship('Tour', back_populates='country', lazy='selectin')
 
-class Destination(db.Model):
+class Destination(BaseModel):
     __tablename__ = 'destinations'
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
@@ -104,14 +95,6 @@ class Destination(db.Model):
 
     images = db.relationship('DestinationImages', back_populates='destination', lazy='selectin', cascade='all, delete-orphan')
 
-    created_at = db.Column(db.DateTime,
-                           default=lambda: datetime.now(timezone.utc)
-                           )
-    modified_at = db.Column(db.DateTime,
-                            default=lambda: datetime.now(timezone.utc),
-                            onupdate=lambda: datetime.now(timezone.utc)
-                            )
-
 class DestinationImages(db.Model):
     '''
     stores images specific to a destination
@@ -121,7 +104,7 @@ class DestinationImages(db.Model):
     destination = db.relationship('Destination', back_populates='images')
     filename = db.Column(db.String(255), nullable=False, unique=True)
 
-class Tour(db.Model):
+class Tour(BaseModel):
     '''
     store planned tours data
     '''
@@ -150,14 +133,6 @@ class Tour(db.Model):
     end_date = db.Column(db.Date, nullable=True, index=True)
     is_day_trip = db.Column(db.Boolean, default=False)
     images = db.relationship('TourImages', back_populates='tour', cascade='all, delete-orphan', lazy='selectin')
-
-    created_at = db.Column(db.DateTime,
-                           default=lambda: datetime.now(timezone.utc)
-                           )
-    modified_at = db.Column(db.DateTime,
-                            default=lambda: datetime.now(timezone.utc),
-                            onupdate=lambda: datetime.now(timezone.utc)
-                            )
 
 class TourImages(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
