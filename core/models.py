@@ -95,6 +95,26 @@ class Destination(BaseModel):
 
     images = db.relationship('DestinationImages', back_populates='destination', lazy='selectin', cascade='all, delete-orphan')
 
+
+    def destination_preview(self):
+        '''
+        returns the destination preview details
+        '''
+
+        cover = next((img for img in self.images if img.is_cover), None)
+
+        return {
+                'id': self.id,
+                'name': self.name,
+                'location': self.location,
+                'start_price': str(self.start_price),
+                'slug': self.slug,
+                'is_featured': self.is_featured,
+                "image": cover.url if cover else None        
+                }
+
+
+
 class DestinationImages(db.Model):
     '''
     stores images specific to a destination
@@ -103,6 +123,7 @@ class DestinationImages(db.Model):
     destination_id = db.Column(db.Integer, db.ForeignKey('destinations.id', ondelete='CASCADE'), nullable=False)
     destination = db.relationship('Destination', back_populates='images')
     filename = db.Column(db.String(255), nullable=False, unique=True)
+    is_cover = db.Column(db.Boolean, default=False, index=True)
 
 class Tour(BaseModel):
     '''
