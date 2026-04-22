@@ -7,6 +7,8 @@ from datetime import timedelta
 
 load_dotenv()
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+
 
 class Config():
     SECRET_KEY = os.getenv('SECRET_KEY')
@@ -30,3 +32,8 @@ class Config():
     JWT_ALGORITHM = "HS256"
     JWT_ACCESS_COOKIE_PATH = '/'
     JWT_REFRESH_COOKIE_PATH = '/'
+
+    SUPER_ADMIN_EMAIL = os.getenv('SUPER_ADMIN_EMAIL')
+    SUPER_ADMIN_PASSWORD = os.getenv('SUPER_ADMIN_PASSWORD')
+
+    UPLOAD_FOLDER =  os.path.join(BASE_DIR, 'static', 'uploads')
