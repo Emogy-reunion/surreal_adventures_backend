@@ -103,6 +103,9 @@ class Destination(BaseModel):
 
         cover = next((img for img in self.images if img.is_cover), None)
 
+        if not cover and self.images:
+            cover = self.images[0]
+
         return {
                 'id': self.id,
                 'name': self.name,
