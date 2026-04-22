@@ -81,10 +81,11 @@ def create_destination():
                 image_filenames.append(filename)
                 saved_file_paths.append(file_path)
 
-        for filename in image_filenames:
+        for index, filename in enumerate(image_filenames):
             img = DestinationImages(
                     filename=filename,
-                    destination_id=destination.id
+                    destination_id=destination.id,
+                    is_cover=(index == 0)
             )
             db.session.add(img)
 
