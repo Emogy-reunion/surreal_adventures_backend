@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from core.models import Users
+from core.models import User
 from core.forms import RegistrationForm, LoginForm
 from core.extensions import db
 from werkzeug.datastructures import MultiDict
