@@ -38,7 +38,7 @@ def create_destination():
         location = form.location.data.lower().strip()
         start_price = form.start_price.data
         description = form.description.data.strip()
-        highlights = form.highlights.data.strip()
+        highlights = [highlight.strip() for highlight in form.highlights.data.splitlines() if highlight.strip()]
         is_featured = form.is_featured.data
         category = form.category.data.lower().strip()
         slug = slugify(location)
