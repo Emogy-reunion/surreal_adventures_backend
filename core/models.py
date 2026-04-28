@@ -82,7 +82,7 @@ class Destination(BaseModel):
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False, index=True)
     country = db.relationship('Country', back_populates='destinations', lazy='selectin')
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True, index=True)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id', ondelete='SET NULL'), nullable=True, index=True)
     user = db.relationship('User', back_populates='destinations', lazy='selectin')
 
     name = db.Column(db.String(255), nullable=False)
@@ -137,7 +137,7 @@ class Tour(BaseModel):
 
     id = db.Column(db.Integer, primary_key=True, nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
+    user_id = db.Column(UUID(as_uuid=True), db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
     user = db.relationship('User', back_populates='tours')
 
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
