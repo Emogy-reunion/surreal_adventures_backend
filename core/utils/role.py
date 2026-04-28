@@ -3,7 +3,7 @@ used to protect routes by enforcing access based controls
 '''
 from functools import wraps
 from flask_jwt_extended import get_jwt_identity
-from core.models import Users
+from core.models import User
 from core import db
 from flask import jsonify
 import uuid
@@ -32,7 +32,7 @@ def role_required(*roles):
             if not user_id:
                 return jsonify({'error': 'Missing or invalid token!'}), 401
 
-            current_user = db.session.get(Users, user_id)
+            current_user = db.session.get(User, user_id)
 
             if not current_user:
                 return jsonify({'error': 'User not found!'}), 404
