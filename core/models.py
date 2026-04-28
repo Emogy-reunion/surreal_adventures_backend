@@ -135,7 +135,7 @@ class Tour(BaseModel):
     '''
     id = db.Column(db.Integer, primary_key=True, nullable=False)
 
-    user_id = db.Column(d.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
     user = db.relationship('User', back_populates='tours')
 
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
