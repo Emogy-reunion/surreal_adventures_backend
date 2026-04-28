@@ -133,6 +133,8 @@ class Tour(BaseModel):
     '''
     store planned tours data
     '''
+    __tablename__ = 'tours'
+
     id = db.Column(db.Integer, primary_key=True, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='SET NULL'), nullable=False)
