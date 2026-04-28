@@ -11,10 +11,9 @@ from core.extensions import db
 from werkzeug.datastructures import MultiDict
 
 
-
 dest_bp = Blueprint('dest_bp', __name__)
-
 saved_file_paths = []
+
 
 @dest_bp.route('/destinations', methods=['POST'])
 @jwt_required()
@@ -26,7 +25,7 @@ def create_destination():
     try:
 
         data = request.get_json() or {}
-        current_user_id  = uuid.UUID(get_jwt_identity())
+        current_user_id = uuid.UUID(get_jwt_identity())
 
         form = DestinationUploadForm(formData=MultiDict(data))
 
@@ -45,11 +44,11 @@ def create_destination():
         country_slug = slugify(country_name)
         images = request.files.getlist('images')
 
-         if not images or len(images) < 3:
-             return jsonify({'error': 'Please upload at least 3 images to showcase the product clearly'}), 400
+        if not images or len(images) < 3:
+            return jsonify({'error': 'Please upload at least 3 images to showcase the product clearly'}), 400
 
-         if images and len(images) > 6:
-             return jsonify({'error': 'You can upload a maximum of 6 images. Choose the most relevant ones.'}), 400
+        if images and len(images) > 6:
+            return jsonify({'error': 'You can upload a maximum of 6 images. Choose the most relevant ones.'}), 400
 
         user_id = db.session.query(User.id).filter_by(id=current_user_id).scalar()
 
@@ -102,9 +101,3 @@ def create_destination():
             except Exception as e:
                 print(f"Failed to delete file {file_path}")
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
-
-
-
-
-
-
