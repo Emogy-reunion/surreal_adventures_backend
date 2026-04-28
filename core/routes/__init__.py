@@ -7,5 +7,5 @@ def register_blueprints(app):
     registers the applications blueprints with the
     '''
     app.register_blueprint(auth, url_prefix="/api/v1")
-    app.register_blueprint(dest_bp, url_prefix="/api/v1"
+    app.register_blueprint(dest_bp, url_prefix="/api/v1")
 
