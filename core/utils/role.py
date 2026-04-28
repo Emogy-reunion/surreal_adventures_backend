@@ -4,7 +4,7 @@ used to protect routes by enforcing access based controls
 from functools import wraps
 from flask_jwt_extended import get_jwt_identity
 from core.models import User
-from core import db
+from core.extensions import db
 from flask import jsonify
 import uuid
 
