@@ -6,6 +6,8 @@ from core.utils.custom_form_validators import validate_multiline_list
 
 
 
+ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp']
+
 class RegistrationForm(FlaskForm):
     '''
     validates the email and password fields
