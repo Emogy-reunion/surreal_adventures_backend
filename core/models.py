@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID, JSONB
 from datetime import datetime, timezone
 import uuid
 from slugify import slugify
+from sqlalchemy import func
 
 
 class BaseModel(db.Model):
