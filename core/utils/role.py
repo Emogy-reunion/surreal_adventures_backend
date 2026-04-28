@@ -3,8 +3,8 @@ used to protect routes by enforcing access based controls
 '''
 from functools import wraps
 from flask_jwt_extended import get_jwt_identity
-from app.models import Users
-from app import db
+from core.models import Users
+from core import db
 from flask import jsonify
 import uuid
 
