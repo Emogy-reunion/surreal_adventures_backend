@@ -30,7 +30,7 @@ def register():
         email = form.email.data.strip().lower()
         password = form.password.data
 
-        user = Users.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
 
         if user:
             return jsonify({'error': 'We couldn’t create your account — this email is already in use.'}), 400
@@ -68,7 +68,7 @@ def login():
         email = form.email.data.strip().lower()
         password = form.password.data
 
-        user = Users.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
 
         if not user or not user.check_password(password):
             return jsonify({"error": 'Invalid login credentials!'}), 400
@@ -99,7 +99,7 @@ def refresh_token():
         user_id = uuid.UUID((get_jwt_identity()))
 
         # check if user still exists
-        user = Users.query.get(user_id)
+        user = User.query.get(user_id)
         if not user:
             return jsonify({"error": "Invalid token"}), 401
 
@@ -141,7 +141,7 @@ def is_logged_in():
     try:
         user_id = uuid.UUID(get_jwt_identity())
 
-        user = db.session.get(Users, user_id)
+        user = db.session.get(User, user_id)
 
         if not user:
             return jsonify({'error': 'User not found!'}), 404
@@ -161,7 +161,7 @@ def user_data():
     try:
         user_id = uuid.UUID(get_jwt_identity())
 
-        user = db.session.get(Users, user_id)
+        user = db.session.get(User, user_id)
             
         if not user:
             return jsonify({'error': 'User not found!'}), 404
