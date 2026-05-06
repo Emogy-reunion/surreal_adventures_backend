@@ -22,7 +22,7 @@ def create_initial_admin():
         super_admin = User(email=email, password=password, role = 'superadmin')
         db.session.add(super_admin)
         db.session.commit()
-            return
+        return
     except Exception as e:
         db.session.rollback()
         raise e
