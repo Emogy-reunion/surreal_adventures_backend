@@ -54,8 +54,7 @@ class User(BaseModel):
         self.email = email
         self.password_hash = User.hash_password(password)
 
-        @staticmethod
-        def hash_password(password):
+        def hash_password(self, password):
             return bcrypt.generate_password_hash(password).decode('utf-8')
 
         def check_password(self, password):
