@@ -19,7 +19,7 @@ def create_initial_admin():
         if existing_user:
             return
 
-        super_admin = User(email=email, password=password, role = 'superadmin')
+        super_admin = User(email=email, password=password, role ='superadmin')
         db.session.add(super_admin)
         db.session.commit()
         return
