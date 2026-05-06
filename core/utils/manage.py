@@ -16,7 +16,7 @@ def create_initial_admin():
 
         existing_user = db.session.query(User.id).filter_by(email=email).scalar()
 
-        if exiting_user:
+        if existing_user:
             return
 
         super_admin = User(email=email, password=password, role = 'superadmin')
