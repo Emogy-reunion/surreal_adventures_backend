@@ -131,3 +131,45 @@ def logout():
 
     except Exception as e:
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
+
+@auth.route('/is_logged_in', methods=['GET'])
+@jwt_required()
+def is_logged_in():
+    '''
+    checks is a user is logged in
+    '''
+    try:
+        user_id = uuid.UUID(get_jwt_identity())
+
+        user = db.session.get(Users, user_id)
+
+        if not user:
+            return jsonify({'error': 'User not found!'}), 404
+
+        response = {
+                'role': user.role,
+                'success': 'User is authenticated'
+                }
+        return jsonify(response), 200
+
+    except Exception as e:
+        return jsonify({"error": 'An unexpected error occured. Please try again!'}), 500
+
+@auth.route('/user_data', methods=['GET'])
+@jwt_required()
+def user_data():
+    try:
+        user_id = uuid.UUID(get_jwt_identity())
+
+        user = db.session.get(Users, user_id)
+            
+        if not user:
+            return jsonify({'error': 'User not found!'}), 404
+
+        data = {
+                'email': user.email,
+                'role': user.role
+                }
+        return jsonify(data), 200
+    except Exception as E:
+        return jsonify({"error": 'An unexpected error occured. Please try again!'}), 500
