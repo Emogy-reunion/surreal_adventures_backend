@@ -2,6 +2,9 @@ import click
 from core.models import User
 from flask import current_app
 from core.extensions import db
+from flask.cli import with_appcontext
+import os
+
 
 def create_initial_admin():
     try:
@@ -34,10 +37,10 @@ def ensure_upload_folder():
     os.makedirs(upload_path, exist_ok=True)
 
 
-@app.cli.command("setup")
+@click.command("setup")
+@with_appcontext
 def setup():
     """Set up initial admin and upload folder."""
-    with app.app_context():
-        create_initial_admin()
-        ensure_upload_folder()
-        click.echo("Super admin created (if not exists) and upload folder ensured.")
+    create_initial_admin()
+    ensure_upload_folder()
+    click.echo("Super admin created (if not exists) and upload folder ensured.")
