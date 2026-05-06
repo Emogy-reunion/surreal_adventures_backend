@@ -45,7 +45,7 @@ class User(BaseModel):
                      nullable=False
                      )
     destinations = db.relationship('Destination', back_populates='user', lazy='selectin')
-    tours = db.relationship('Tours', back_populates='user', lazy='selectin')
+    tours = db.relationship('Tour', back_populates='user', lazy='selectin')
 
     def __init__(self, email, password):
         '''
