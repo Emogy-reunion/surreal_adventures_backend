@@ -59,7 +59,7 @@ class User(BaseModel):
         return bcrypt.generate_password_hash(password).decode('utf-8')
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return bcrypt.check_password_hash(self.password_hash, password)
 
 
 class Country(BaseModel):
