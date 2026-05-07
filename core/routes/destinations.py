@@ -138,7 +138,7 @@ def get_destinations():
         return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
 
 
-@dest_bp.route('/destinations/<int: dest_id>', methods=['GET'])
+@dest_bp.route('/destinations/<int:dest_id>', methods=['GET'])
 def get_destination_details(dest_id):
     try:
         destination = Destination.query.options(selectinload(Destination.images)).filter_by(id=dest_id).first()
