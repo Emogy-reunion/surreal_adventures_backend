@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, current_app
 from core.utils.role import role_required
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
-import slugify
+from slugify import slugify
 from core.forms import DestinationUploadForm
 from core.models import User, Destination, DestinationImages, Country
 from werkzeug.utils import secure_filename
