@@ -136,13 +136,13 @@ def get_destinations():
         return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
 
 
-    @dest_bp.route('/destinations/<int: dest_id>', methods=['GET'])
-    def get_destination_details(dest_id):
-        try:
-            destination = Destination.query.options(selectinload(Destination.images)).filter_by(id=dest_id).first()
+@dest_bp.route('/destinations/<int: dest_id>', methods=['GET'])
+def get_destination_details(dest_id):
+    try:
+        destination = Destination.query.options(selectinload(Destination.images)).filter_by(id=dest_id).first()
 
-            destination_details = destination.destination_details() if destination else None
+        destination_details = destination.destination_details() if destination else None
 
-            return jsonify({'destination_details': destination_details}), 200
-        else:
-            return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
+        return jsonify({'destination_details': destination_details}), 200
+    else:
+        return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
