@@ -109,8 +109,12 @@ class Destination(BaseModel):
 
         return {
                 'id': self.id,
-                'name': self.name,
-                'location': self.location,
+                'name': self.name.title(),
+                'location': self.location.title(),
+                'country': self.country.title(),
+                'currency': 'KES',
+                'category': self.category,
+                'short_description': self.description[:120] + '...',
                 'start_price': str(self.start_price),
                 'slug': self.slug,
                 'is_featured': self.is_featured,
