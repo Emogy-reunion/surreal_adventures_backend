@@ -24,7 +24,8 @@ def create_destination():
     '''
     try:
 
-        data = request.get_json() or {}
+        data = request.form if request.form else {}
+        files = request.files if request.files else {}
         current_user_id = uuid.UUID(get_jwt_identity())
 
         form = DestinationUploadForm(formData=MultiDict(data))
@@ -42,7 +43,7 @@ def create_destination():
         category = form.category.data.lower().strip()
         slug = slugify(location)
         country_slug = slugify(country_name)
-        images = request.files.getlist('images')
+        images = request.files.getlist('images') 
 
         if not images or len(images) < 3:
             return jsonify({'error': 'Please upload at least 3 images to showcase the product clearly'}), 400
