@@ -23,6 +23,7 @@ class Config():
     JWT_COOKIE_SAMESITE = 'Lax'
 
     # Location
+    JWT_TOKEN_LOCATION = ['cookies']
     JWT_ACCESS_COOKIE_NAME = 'access_token_cookie'
     JWT_REFRESH_COOKIE_NAME = 'refresh_token_cookie'
 
