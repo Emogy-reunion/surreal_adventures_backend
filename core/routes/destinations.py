@@ -12,7 +12,6 @@ from werkzeug.datastructures import MultiDict
 from sqlalchemy.orm import selectinload
 from sqlalchemy import desc
 
-
 dest_bp = Blueprint('dest_bp', __name__)
 saved_file_paths = []
 
@@ -79,7 +78,7 @@ def create_destination():
                 filename = f"{uuid.uuid4()}.{extension}"
                 filename = secure_filename(filename)
                 file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-                file.save(file_path)
+                image.save(file_path)
                 image_filenames.append(filename)
                 saved_file_paths.append(file_path)
 
