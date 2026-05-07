@@ -148,6 +148,30 @@ def get_destination_details(dest_id):
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
 
+@dest_bp.route('/destinations/<int:dest_id>', methods=['DELETE'])
+@jwt_required()
+def delete_destination(dest_id):
+    try:
+        destination = Destination.query.options(selectinload(Destination.images)).filter_by(id=dest_id).first()
+
+        if not destination:
+            return jsonify({"error": 'Destination not found'}), 404
+
+        db.session.delete(destination)
+        db.session.commit()
+
+        if destination.images:
+            for image in destination.images:
+                try:
+                    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image.filename)
+                    os.remove(file_path)
+                except Exception as e:
+                    print(f"Failed to delete file {file_path}: {e}")
+        return jsonify({"success": 'Destination deleted successfully!'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
+
 @dest_bp.route('/send_image/<filename>', methods=['GET'])
 def send_image(filename):
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
