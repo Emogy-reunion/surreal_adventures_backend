@@ -60,6 +60,10 @@ class DestinationUploadForm(FlaskForm):
         DataRequired(),
         Length(max=255)
         ])
+    location = StringField('Location', validators=[
+        DataRequired(),
+        Length(max=255)
+        ])
     start_price = DecimalField('Start price', validators=[
         DataRequired(message="Price must be greater than 0"),
         NumberRange(min=1, max=10000000, message="Price must be between 1 and 100,000,000")
