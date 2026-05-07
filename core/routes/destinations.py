@@ -146,5 +146,5 @@ def get_destination_details(dest_id):
         destination_details = destination.destination_details() if destination else None
 
         return jsonify({'destination_details': destination_details}), 200
-    else:
+    except Exception as e:
         return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
