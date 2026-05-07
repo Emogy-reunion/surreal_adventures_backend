@@ -1,7 +1,7 @@
 gnore the virtual environment directory
 myenv/
 
-static/
+/core/static/
 
 .env
 
