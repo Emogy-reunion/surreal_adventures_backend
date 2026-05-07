@@ -1,6 +1,8 @@
 gnore the virtual environment directory
 myenv/
 
+static/
+
 .env
 
 migrations/
