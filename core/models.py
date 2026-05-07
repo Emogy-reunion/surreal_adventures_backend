@@ -111,7 +111,7 @@ class Destination(BaseModel):
                 'id': self.id,
                 'name': self.name.title(),
                 'location': self.location.title(),
-                'country': self.country.title(),
+                'country': self.country.name.title(),
                 'currency': 'KES',
                 'category': self.category,
                 'short_description': self.description[:120] + '...',
