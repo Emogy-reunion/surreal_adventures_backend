@@ -112,7 +112,7 @@ class Destination(BaseModel):
                 'name': self.name.title(),
                 'location': self.location.title(),
                 'country': self.country.name.title(),
-                'currency': 'KES',
+                'currency': 'Kes',
                 'category': self.category,
                 'short_description': self.description[:120] + '...',
                 'start_price': str(self.start_price),
@@ -121,6 +121,25 @@ class Destination(BaseModel):
                 "image": cover.filename if cover else None        
                 }
 
+    def destination_details(self):
+        '''
+        returns the destination in details
+        '''
+
+        return {
+                'id': self.id,
+                'name': self.name.title(),
+                'location': self.location.title(),
+                'country': self.country.name.title(),
+                'currency': 'Kes',
+                'category': self.category,
+                'short_description': self.description
+                'highlights': self.highlights,
+                'start_price': str(self.start_price),
+                'slug': self.slug,
+                'is_featured': self.is_featured,
+                "image": [images for image in self.images.filename] if self.images else []
+                }
 
 
 class DestinationImages(db.Model):
