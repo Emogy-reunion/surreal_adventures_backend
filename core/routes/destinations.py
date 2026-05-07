@@ -148,3 +148,7 @@ def get_destination_details(dest_id):
         return jsonify({'destination_details': destination_details}), 200
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
+
+@dest_bp.route('/send_image/<filename>', methods=['GET'])
+def send_image(filename):
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
