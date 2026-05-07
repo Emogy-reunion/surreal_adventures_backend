@@ -113,9 +113,9 @@ def get_destinations():
         query = Destination.query.options(selectinload(Destination.images))
 
         paginated_results = (query
-                    .order_by(desc(Destination.created_at))
-                    .paginate(page=page, per_page=per_page, error_out=False)
-                    )
+                             .order_by(desc(Destination.created_at))
+                             .paginate(page=page, per_page=per_page, error_out=False)
+                             )
 
         destinations = [destination.destination_preview() for destination in paginated_results.items] if paginated_results.items else []
 
