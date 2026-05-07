@@ -102,3 +102,32 @@ def create_destination():
             except Exception as e:
                 print(f"Failed to delete file {file_path}")
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
+
+
+@dest_bp.route('/destinations', methods=['GET'])
+def get_destinations():
+    try:
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 12))
+
+        query = Destination.query.options(selectinload(Destination.images))
+
+        paginated_results = (query
+                    .order_by(desc(Destination.created_at))
+                    .paginate(page=page, per_page=per_page, error_out=False)
+                    )
+
+        destinations = [destination.destination_preview() for destination in paginated_results.items] if paginated_results.items else []
+
+        pagination = {
+                'next': paginated_results.next_num if paginated_results.has_next else None,
+                'prev': paginated_results.prev_num if paginated_results.has_prev else None,
+                'page': paginated_results.page,
+                'pages': paginated_results.pages,
+                'total': paginated_results.total
+                }
+
+        return jsonify({
+            'pagination': pagination,
+            'destinations': destinations
+            }), 200
