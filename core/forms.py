@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField, DecimalField, DateField
-from wtforms.validators import Length, Email, DataRequired, Regexp, EqualTo, NumberRange, Optional
+from wtforms.validators import Length, Email, DataRequired, Regexp, EqualTo, NumberRange, Optional, ValidationError
 from flask_wtf.file import FileField, MultipleFileField, FileAllowed
 from core.utils.custom_form_validators import validate_multiline_list
 
@@ -91,6 +91,12 @@ class TourUploadForm(FlaskForm):
 
     class Meta:
         csrf = False
+    
+
+    country = StringField('Country', validators=[
+        DataRequired(),
+        Length(max=100)
+        ])
 
     name = StringField('Name', validators=[
         DataRequired(),
