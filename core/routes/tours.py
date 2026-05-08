@@ -12,7 +12,7 @@ from werkzeug.datastructures import MultiDict
 from sqlalchemy.orm import selectinload
 from sqlalchemy import desc
 
-dest_bp = Blueprint('tour_bp', __name__)
+tour_bp = Blueprint('tour_bp', __name__)
 saved_file_paths = []
 
 
