@@ -87,7 +87,7 @@ class DestinationUploadForm(FlaskForm):
         ])
 
 class TourUploadForm(FlaskForm):
-     name = StringField('Name', validators=[
+    name = StringField('Name', validators=[
         DataRequired(),
         Length(max=255)
         ])
@@ -134,18 +134,11 @@ class TourUploadForm(FlaskForm):
         ])
 
     def validate_end_date(self, field):
-        """
-        Validates that end_date is not before start_date.
-        Same day is allowed.
-        """
         if self.start_date.data and field.data:
             if field.data < self.start_date.data:
                 raise ValidationError("End date cannot be earlier than the start date.")
 
     def validate_discount_end(self, field):
-        """
-        Optional: Validates that the discount period is logical.
-        """
         if self.discount_start.data and field.data:
             if field.data < self.discount_start.data:
                 raise ValidationError("Discount end date cannot be earlier than the discount start.")
