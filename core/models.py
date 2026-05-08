@@ -133,7 +133,7 @@ class Destination(BaseModel):
                 'country': self.country.name.title(),
                 'currency': 'Kes',
                 'category': self.category,
-                'short_description': self.description
+                'short_description': self.description,
                 'highlights': self.highlights,
                 'start_price': str(self.start_price),
                 'slug': self.slug,
