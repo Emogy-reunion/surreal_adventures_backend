@@ -45,7 +45,7 @@ def create_tour():
         description = form.description.data.strip()
         highlights = [highlight.strip() for highlight in form.highlights.data.splitlines() if highlight.strip()]
         includes = [include.strip() for include in form.includes.data.splitlines() if include.strip()]
-        excludes = [include.strip() for exclude in form.excludes.data.splitlines() if exclude.strip()]
+        excludes = [exclude.strip() for exclude in form.excludes.data.splitlines() if exclude.strip()]
         is_featured = form.is_featured.data
         is_active = form.is_active.data
         is_day_trip = form.is_day_trip.data
@@ -79,7 +79,7 @@ def create_tour():
                            highlights=highlights, is_featured=is_featured, is_active=is_active,
                            is_day_trip=is_day_trip, includes=includes, excludes=excludes,
                            discount_price=discount_price, discount_start=discount_start, category=category,
-                           discount=discount_end, start_date=start_date, end_date=end_date, duration=duration
+                           discount_end=discount_end, start_date=start_date, end_date=end_date, duration=duration
                            )
         db.session.add(tour)
         db.session.flush()
