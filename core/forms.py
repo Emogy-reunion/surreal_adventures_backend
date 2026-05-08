@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField, BooleanField, DecimalField, DateField
-from wtforms.validators import Length, Email, DataRequired, Regexp, EqualTo, NumberRange
+from wtforms.validators import Length, Email, DataRequired, Regexp, EqualTo, NumberRange, Optional
 from flask_wtf.file import FileField, MultipleFileField, FileAllowed
 from core.utils.custom_form_validators import validate_multiline_list
 
