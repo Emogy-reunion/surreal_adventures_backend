@@ -185,6 +185,44 @@ class Tour(BaseModel):
     is_day_trip = db.Column(db.Boolean, default=False)
     images = db.relationship('TourImages', back_populates='tour', cascade='all, delete-orphan', lazy='selectin')
 
+    def tour_preview(self):
+
+        current_price = self.price
+        on_discount = False
+
+
+        from datetime import date
+    
+        today = date.today()
+        if self.discount_price and self.discount_start and self.discount_end:
+            if self.discount_start <= today <= self.discount_end:
+                current_price = self.discount_price
+                on_discount = True
+
+        cover = next((img for img in self.images if img.is_cover), None)
+
+        if not cover and self.images:
+            cover = self.images[0]
+
+        return {
+                'id': self.id,
+                'name': self.name.title(),
+                'location': self.location.title(),
+                'country': self.country.name.title(),
+                'currency': 'Kes',
+                'category': self.category,
+                'short_description': self.description[:120] + '...',
+                'start_price': str(self.start_price),
+                'discount_price': str(self.discount_price) if self.discount_price else None,
+                'current_price': str(current_price),
+                'on_discount': on_discount,
+                'slug': self.slug,
+                'is_featured': self.is_featured,
+                "image": cover.filename if cover else None,
+                'start_date': self.start_date.strftime('%d %b %Y')
+                }
+
+
 class TourImages(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     tour_id = db.Column(db.Integer, db.ForeignKey('tours.id', ondelete='CASCADE'), nullable=False)
