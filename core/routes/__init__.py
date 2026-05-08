@@ -1,5 +1,6 @@
 from core.routes.authentication import auth
 from core.routes.destinations import dest_bp
+from core.routes.tours import tour_bp
 
 
 def register_blueprints(app):
