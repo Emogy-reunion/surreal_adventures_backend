@@ -16,7 +16,7 @@ tour_bp = Blueprint('tour_bp', __name__)
 saved_file_paths = []
 
 
-@dest_bp.route('/tours', methods=['POST'])
+@tour_bp.route('/tours', methods=['POST'])
 @jwt_required()
 @role_required('admin')
 def create_tour():
