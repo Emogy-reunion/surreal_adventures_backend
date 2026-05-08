@@ -212,11 +212,10 @@ class Tour(BaseModel):
                 'currency': 'Kes',
                 'category': self.category,
                 'short_description': self.description[:120] + '...',
-                'start_price': str(self.start_price),
+                'price': str(self.price),
                 'discount_price': str(self.discount_price) if self.discount_price else None,
                 'current_price': str(current_price),
                 'on_discount': on_discount,
-                'slug': self.slug,
                 'is_featured': self.is_featured,
                 "image": cover.filename if cover else None,
                 'start_date': self.start_date.strftime('%d %b %Y')
