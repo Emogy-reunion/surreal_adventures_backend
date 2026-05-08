@@ -75,7 +75,7 @@ def create_tour():
             country_id = country.id
 
         tour = Tour(country_id=country_id, user_id=user_id, name=name,
-                           location=location, price, description=description,
+                           location=location, price=price, description=description,
                            highlights=highlights, is_featured=is_featured, is_active=is_active,
                            is_day_trip=is_day_trip, includes=includes, excludes=excludes,
                            discount_price=discount_price, discount_start=discount_start, category=category,
