@@ -44,8 +44,8 @@ def create_tour():
         discount_end = form.discount_end.data
         description = form.description.data.strip()
         highlights = [highlight.strip() for highlight in form.highlights.data.splitlines() if highlight.strip()]
-        includes = [include.strip() for include in form.includes.data.splitlines() if includes.strip()]
-        excludes = [include.strip() for exclude in form.excludes.data.splitlines() if excludes.strip()]
+        includes = [include.strip() for include in form.includes.data.splitlines() if include.strip()]
+        excludes = [include.strip() for exclude in form.excludes.data.splitlines() if exclude.strip()]
         is_featured = form.is_featured.data
         is_active = form.is_active.data
         is_day_trip = form.is_day_trip.data
