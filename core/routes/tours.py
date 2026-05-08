@@ -116,3 +116,71 @@ def create_tour():
             except Exception as e:
                 print(f"Failed to delete file {file_path}")
         return jsonify({"error": 'An unexpected error occurred. Please try again!'}), 500
+
+
+@tour_bp.route('/tours', methods=['GET'])
+def get_tours():
+    try:
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 12))
+
+        query = Tour.query.options(selectinload(Tour.images))
+
+        paginated_results = (query
+                             .order_by(desc(Tour.created_at))
+                             .paginate(page=page, per_page=per_page, error_out=False)
+                             )
+
+        tours = [tour.tour_preview() for tour in paginated_results.items] if paginated_results.items else []
+
+        pagination = {
+                'next': paginated_results.next_num if paginated_results.has_next else None,
+                'prev': paginated_results.prev_num if paginated_results.has_prev else None,
+                'page': paginated_results.page,
+                'pages': paginated_results.pages,
+                'total': paginated_results.total
+                }
+
+        return jsonify({
+            'pagination': pagination,
+            'tours': tours
+            }), 200
+
+    except Exception as e:
+        return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
+
+
+@tour_bp.route('/tours/<int:tour_id>', methods=['GET'])
+def get_tour_details(dest_id):
+    try:
+        tour = Tour.query.options(selectinload(Tour.images)).filter_by(id=tour_id).first()
+
+        tour_details = tour.tour_details() if tour else None
+
+        return jsonify({'destination_details': destination_details}), 200
+    except Exception as e:
+        return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
+
+@tour_bp.route('/tours/<int:tour_id>', methods=['DELETE'])
+@jwt_required()
+def delete_tour(tour_id):
+    try:
+        tour = Tour.query.options(selectinload(Tour.images)).filter_by(id=tour_id).first()
+
+        if not tour:
+            return jsonify({"error": 'Destination not found'}), 404
+
+        db.session.delete(tour)
+        db.session.commit()
+
+        if tour.images:
+            for image in tour.images:
+                try:
+                    file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], image.filename)
+                    os.remove(file_path)
+                except Exception as e:
+                    print(f"Failed to delete file {file_path}: {e}")
+        return jsonify({"success": 'Destination deleted successfully!'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
