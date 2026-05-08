@@ -85,3 +85,63 @@ class DestinationUploadForm(FlaskForm):
         DataRequired(),
         FileAllowed(ALLOWED_EXTENSIONS, 'Images only!')
         ])
+
+class TourUploadForm(FlaskForm):
+     name = StringField('Name', validators=[
+        DataRequired(),
+        Length(max=255)
+        ])
+    location = StringField('Location', validators=[
+        DataRequired(),
+        Length(max=255)
+        ])
+    price = DecimalField('Price', validators=[
+        DataRequired(message="Price must be greater than 0"),
+        NumberRange(min=1, max=10000000, message="Price must be between 1 and 100,000,000")
+        ], places=2)
+    duration = StringField('Duration', validators=[DataRequired()])
+    start_date = DateField('Start Date', validators=[DataRequired()])
+    end_date = DateField('End Date', validators=[Optional()])
+
+    discount_start = DateField('Discount Start', validators=[Optional()])
+    discount_end = DateField('Discount End', validators=[Optional()])
+    discount_price = DecimalField('Discount Price', places=2, validators=[Optional()])
+    is_featured = BooleanField('Is Featured')
+    is_day_trip = BooleanField('Is  Day Trip')
+    description = TextAreaField('Description', validators=[
+        DataRequired(message="Please provide a detailed description of the tour."),
+        Length(min=150, max=3000, message="Description must be between 150 and 3000 characters.")
+        ])
+    highlights = TextAreaField('Highlights', validators=[
+        DataRequired(),
+        validate_multiline_list
+        ])
+    includes = TextAreaField('Includes', validators=[
+        DataRequired(),
+        validate_multiline_list
+        ])
+    excludes = TextAreaField('Excludes', validators=[
+        DataRequired(),
+        validate_multiline_list
+        ])
+    images = MultipleFileField('Images', validators=[
+        DataRequired(),
+        FileAllowed(ALLOWED_EXTENSIONS, 'Images only!')
+        ])
+
+    def validate_end_date(self, field):
+        """
+        Validates that end_date is not before start_date.
+        Same day is allowed.
+        """
+        if self.start_date.data and field.data:
+            if field.data < self.start_date.data:
+                raise ValidationError("End date cannot be earlier than the start date.")
+
+    def validate_discount_end(self, field):
+        """
+        Optional: Validates that the discount period is logical.
+        """
+        if self.discount_start.data and field.data:
+            if field.data < self.discount_start.data:
+                raise ValidationError("Discount end date cannot be earlier than the discount start.")
