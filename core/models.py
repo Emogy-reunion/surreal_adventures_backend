@@ -175,6 +175,7 @@ class Tour(BaseModel):
     discount_price = db.Column(db.Numeric(10,2), nullable=True)
     is_featured = db.Column(db.Boolean, default=False, index=True)
     is_active = db.Column(db.Boolean, default=True, index=True)
+    category = db.Column(db.String(50), index=True)
     description = db.Column(db.Text, nullable=False)
     includes = db.Column(JSONB, nullable=False)
     excludes = db.Column(JSONB, nullable=False)
@@ -189,5 +190,6 @@ class TourImages(db.Model):
     tour_id = db.Column(db.Integer, db.ForeignKey('tours.id', ondelete='CASCADE'), nullable=False)
     tour = db.relationship('Tour', back_populates='images')
     filename = db.Column(db.String(255), nullable=False)
+    is_cover = db.Column(db.Boolean, default=False, index=True)
 
 
