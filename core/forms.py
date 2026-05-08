@@ -102,12 +102,16 @@ class TourUploadForm(FlaskForm):
     duration = StringField('Duration', validators=[DataRequired()])
     start_date = DateField('Start Date', validators=[DataRequired()])
     end_date = DateField('End Date', validators=[Optional()])
-
+    category = StringField('Category', validators=[
+        DataRequired(),
+        Length(max=50)
+        ])
     discount_start = DateField('Discount Start', validators=[Optional()])
     discount_end = DateField('Discount End', validators=[Optional()])
     discount_price = DecimalField('Discount Price', places=2, validators=[Optional()])
     is_featured = BooleanField('Is Featured')
     is_day_trip = BooleanField('Is  Day Trip')
+    is_active = BooleanField('Is Active')
     description = TextAreaField('Description', validators=[
         DataRequired(message="Please provide a detailed description of the tour."),
         Length(min=150, max=3000, message="Description must be between 150 and 3000 characters.")
