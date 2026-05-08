@@ -138,7 +138,7 @@ class Destination(BaseModel):
                 'start_price': str(self.start_price),
                 'slug': self.slug,
                 'is_featured': self.is_featured,
-                "image": [images for image in self.images.filename] if self.images else []
+                "image": [image.filename for image in self.images] if self.images else []
                 }
 
 
