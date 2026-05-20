@@ -221,28 +221,26 @@ class Tour(BaseModel):
                 'start_date': self.start_date.strftime('%d %b %Y')
                 }
 
-        def tour_details(self):
+    def tour_details(self):
+        current_price = self.price
+        on_discount = False
 
-            current_price = self.price
-            on_discount = False
+        from datetime import date
 
+        today = date.today()
+        if self.discount_price and self.discount_start and self.discount_end:
+            if self.discount_start <= today <= self.discount_end:
+                current_price = self.discount_price
+                on_discount = True
 
-            from datetime import date
-
-            today = date.today()
-            if self.discount_price and self.discount_start and self.discount_end:
-                if self.discount_start <= today <= self.discount_end:
-                    current_price = self.discount_price
-                    on_discount = True
-
-            return {
+        return {
                 'id': self.id,
                 'name': self.name.title(),
                 'location': self.location.title(),
                 'country': self.country.name.title(),
                 'currency': 'Kes',
                 'category': self.category,
-                'short_description': self.description[:120] + '...',
+                'short_description': self.description,
                 'price': str(self.price),
                 'discount_price': str(self.discount_price) if self.discount_price else None,
                 'current_price': str(current_price),
