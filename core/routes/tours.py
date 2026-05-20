@@ -136,9 +136,13 @@ def get_tours():
 
 
         if country:
-            query = query.filter(
-                    Tour.country.name == country
-                    )
+            query = query.join(
+                    Tour.country
+                    ).filter(
+                            func.lower(
+                                Country.name
+                                ) == country
+                            )
 
         if category:
              query = query.join(
