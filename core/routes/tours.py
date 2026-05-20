@@ -124,16 +124,19 @@ def get_tours():
     try:
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 12))
-        country = request.args.get("country")
-        category = request.args.get("category")
+        country = (request.args.get("country") or "").lower().strip()
+        category = (request.args.get("category") or "").lower().strip()
         max_price = request.args.get('max_price')
 
-        query = Tour.query.options(selectinload(Tour.images))
+        query = Tour.query.options(
+                selectinload(Tour.images),
+                selectinload(Tour.country)
+                )
 
 
         if country:
             query = query.filter(
-                    Tour.country == country
+                    Tour.country.name == country
                     )
 
         if category:
