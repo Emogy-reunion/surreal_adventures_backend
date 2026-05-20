@@ -10,6 +10,7 @@ import os
 from core.extensions import db
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.orm import selectinload
+from sqlalchemy import func
 from sqlalchemy import desc
 from decimal import Decimal
 
@@ -140,10 +141,14 @@ def get_tours():
                     )
 
         if category:
-            query = query.filter(
-                    Tour.category == category
-                    )
-
+             query = query.join(
+                     Tour.country
+                     ).filter(
+                             func.lower(
+                                 Country.name
+                                 ) == country
+                             )
+                     
         if max_price:
             max_price = Decimal(
                     max_price
