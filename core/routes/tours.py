@@ -11,6 +11,7 @@ from core.extensions import db
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.orm import selectinload
 from sqlalchemy import desc
+from decimal import Decimal
 
 tour_bp = Blueprint('tour_bp', __name__)
 saved_file_paths = []
@@ -45,7 +46,7 @@ def create_tour():
         description = form.description.data.strip()
         highlights = [highlight.strip() for highlight in form.highlights.data.splitlines() if highlight.strip()]
         includes = [include.strip() for include in form.includes.data.splitlines() if include.strip()]
-        excludes = [include.strip() for exclude in form.excludes.data.splitlines() if exclude.strip()]
+        excludes = [exclude.strip() for exclude in form.excludes.data.splitlines() if exclude.strip()]
         is_featured = form.is_featured.data
         is_active = form.is_active.data
         is_day_trip = form.is_day_trip.data
@@ -79,7 +80,7 @@ def create_tour():
                            highlights=highlights, is_featured=is_featured, is_active=is_active,
                            is_day_trip=is_day_trip, includes=includes, excludes=excludes,
                            discount_price=discount_price, discount_start=discount_start, category=category,
-                           discount=discount_end, start_date=start_date, end_date=end_date, duration=duration
+                           discount_end=discount_end, start_date=start_date, end_date=end_date, duration=duration
                            )
         db.session.add(tour)
         db.session.flush()
@@ -123,8 +124,30 @@ def get_tours():
     try:
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 12))
+        country = request.args.get("country")
+        category = request.args.get("category")
+        max_price = request.args.get('max_price')
 
         query = Tour.query.options(selectinload(Tour.images))
+
+
+        if country:
+            query = query.filter(
+                    Tours.country == country
+                    )
+
+        if category:
+            query = query.filter(
+                    Tours.category == category
+                    )
+
+        if max_price:
+            max_price = Decimal(
+                    max_price
+                    )
+            query = query.filter(
+                    Tours.current_price <= max_price
+                    )
 
         paginated_results = (query
                              .order_by(desc(Tour.created_at))
@@ -151,13 +174,13 @@ def get_tours():
 
 
 @tour_bp.route('/tours/<int:tour_id>', methods=['GET'])
-def get_tour_details(dest_id):
+def get_tour_details(tour_id):
     try:
         tour = Tour.query.options(selectinload(Tour.images)).filter_by(id=tour_id).first()
 
         tour_details = tour.tour_details() if tour else None
 
-        return jsonify({'destination_details': destination_details}), 200
+        return jsonify({'tour_details': tour_details}), 200
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
 
