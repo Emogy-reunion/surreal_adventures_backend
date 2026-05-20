@@ -151,13 +151,13 @@ def get_tours():
 
 
 @tour_bp.route('/tours/<int:tour_id>', methods=['GET'])
-def get_tour_details(dest_id):
+def get_tour_details(tour_id):
     try:
         tour = Tour.query.options(selectinload(Tour.images)).filter_by(id=tour_id).first()
 
         tour_details = tour.tour_details() if tour else None
 
-        return jsonify({'destination_details': destination_details}), 200
+        return jsonify({'tour_details': tour_details}), 200
     except Exception as e:
         return jsonify({'error': 'An unexpected error occurred. Please try again'}), 500
 
