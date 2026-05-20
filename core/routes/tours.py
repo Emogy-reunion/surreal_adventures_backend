@@ -11,6 +11,7 @@ from core.extensions import db
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.orm import selectinload
 from sqlalchemy import desc
+from decimal import Decimal
 
 tour_bp = Blueprint('tour_bp', __name__)
 saved_file_paths = []
@@ -123,8 +124,30 @@ def get_tours():
     try:
         page = int(request.args.get('page', 1))
         per_page = int(request.args.get('per_page', 12))
+        country = request.args.get("country")
+        category = request.args.get("category")
+        max_price = request.args.get('max_price')
 
         query = Tour.query.options(selectinload(Tour.images))
+
+
+        if country:
+            query = query.filter(
+                    Tours.country == country
+                    )
+
+        if category:
+            query = query.filter(
+                    Tours.category == category
+                    )
+
+        if max_price:
+            max_price = Decimal(
+                    max_price
+                    )
+            query = query.filter(
+                    Tours.current_price <= max_price
+                    )
 
         paginated_results = (query
                              .order_by(desc(Tour.created_at))
