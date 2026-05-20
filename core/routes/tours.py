@@ -133,12 +133,12 @@ def get_tours():
 
         if country:
             query = query.filter(
-                    Tours.country == country
+                    Tour.country == country
                     )
 
         if category:
             query = query.filter(
-                    Tours.category == category
+                    Tour.category == category
                     )
 
         if max_price:
@@ -146,7 +146,7 @@ def get_tours():
                     max_price
                     )
             query = query.filter(
-                    Tours.current_price <= max_price
+                    Tour.price <= max_price
                     )
 
         paginated_results = (query
