@@ -10,9 +10,9 @@ import os
 from core.extensions import db
 from werkzeug.datastructures import MultiDict
 from sqlalchemy.orm import selectinload
-from sqlalchemy import func
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 from decimal import Decimal
+
 
 tour_bp = Blueprint('tour_bp', __name__)
 saved_file_paths = []
@@ -145,14 +145,10 @@ def get_tours():
                             )
 
         if category:
-             query = query.join(
-                     Tour.country
-                     ).filter(
-                             func.lower(
-                                 Country.name
-                                 ) == country
-                             )
-                     
+            query = query.filter(
+                    Tour.category == category
+                    )
+
         if max_price:
             max_price = Decimal(
                     max_price
