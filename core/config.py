@@ -11,6 +11,8 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config():
+    IS_PRODUCTION = os.getenv('FLASK_ENV') == 'production' or os.getenv('APP_SETTINGS') == 'production'
+
     SECRET_KEY = os.getenv('SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -19,7 +21,7 @@ class Config():
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
     # Security  
-    JWT_COOKIE_SECURE = False
+    JWT_COOKIE_SECURE = IS_PRODUCTION
     JWT_COOKIE_SAMESITE = 'Lax'
 
     # Location
